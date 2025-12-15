@@ -1,0 +1,130 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+env:
+  AZURE_WEBAPP_NAME: "demo1-app" # Set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+  DOTNET_VERSION: "9.0.x"
+  DOCKER_REGISTRY: "ghcr.io"
+  IMAGE_NAME: "${{ github.repository }}"
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      dotnet-version: "9.0.x"
+      install-playwright: "true"
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Download published artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: published-app
+          path: ./publish
+
+      - name: Checkout source (for Docker context)
+        uses: actions/checkout@v4
+
+      - name: Read version from VERSION file
+        id: version
+        run: |
+          VERSION=$(cat VERSION | xargs)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+
+      - name: Get git revision
+        id: revision
+        run: |
+          REVISION=$(git rev-parse HEAD)
+          echo "revision=$REVISION" >> $GITHUB_OUTPUT
+          echo "Revision: $REVISION"
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            PUBLISHED_DIR=./publish
+            VERSION=${{ steps.version.outputs.version }}
+            REVISION=${{ steps.revision.outputs.revision }}
+
+  deploy-azure:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: production
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: published-app
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      # Uncomment when Azure Web App is configured
+      # - name: Deploy to Azure Web App
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ${{ env.AZURE_WEBAPP_NAME }}
+      #     publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+      #     package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+      - name: Deployment Info
+        run: |
+          echo "🚀 Ready to deploy to production"
+          echo "📦 Package location: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+          echo "🐳 Docker image available at: ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}"
+          echo ""
+          echo "💡 To enable Azure deployment:"
+          echo "   1. Set AZURE_WEBAPP_NAME environment variable"
+          echo "   2. Add AZURE_WEBAPP_PUBLISH_PROFILE secret"
+          echo "   3. Uncomment the azure/webapps-deploy step"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build, docker, deploy-azure]
+    if: always()
+
+    steps:
+      - name: Notify deployment status
+        run: |
+          if [ "${{ needs.deploy-azure.result }}" == "success" ]; then
+            echo "✅ Deployment successful"
+          elif [ "${{ needs.deploy-azure.result }}" == "skipped" ]; then
+            echo "⏭️ Deployment skipped (not main branch)"
+          else
+            echo "❌ Deployment failed"
+          fi
