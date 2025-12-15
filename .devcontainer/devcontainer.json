@@ -1,0 +1,70 @@
+{
+  "name": "ASP.NET MVC - .NET 9",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:9.0",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:latest": {
+      "version": "latest"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.vscode-dotnet-runtime",
+        "ms-mssql.mssql",
+        "humao.rest-client",
+        "ms-vscode.PowerShell",
+        "eamodio.gitlens",
+        "GitHub.Copilot",
+        "GitHub.Copilot-Chat"
+      ],
+      "settings": {
+        "dotnet.defaultSolutionOrFolder": "${workspaceFolder}",
+        "omnisharp.enableEditorConfigSupport": true,
+        "omnisharp.enableRoslynAnalyzers": true,
+        "omnisharp.analyzeOpenDocumentsOnly": false,
+        "omnisharp.minFindSymbolsFilterLength": 0,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "ms-dotnettools.csharp",
+        "[csharp]": {
+          "editor.defaultFormatter": "ms-dotnettools.csharp",
+          "editor.formatOnSave": true
+        },
+        "[html]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  },
+
+  "postCreateCommand": "dotnet restore && dotnet build",
+
+  "forwardPorts": [5000, 5001, 5432],
+  "portsAttributes": {
+    "5000": {
+      "label": "ASP.NET HTTP",
+      "onAutoForward": "notify"
+    },
+    "5001": {
+      "label": "ASP.NET HTTPS",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    }
+  },
+
+  "remoteEnv": {
+    "ASPNETCORE_ENVIRONMENT": "Development",
+    "DOTNET_CLI_TELEMETRY_OPTOUT": "true"
+  },
+
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+  ],
+
+  "remoteUser": "root"
+}
