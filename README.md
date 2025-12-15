@@ -1,4 +1,4 @@
 # ASPNetCoreMVC1
 demo/labs 
 
-Enjoy!
+Enjoy! s
