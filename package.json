@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "lint:md": "markdownlint \"**/*.md\" --ignore \"**/node_modules/**\" --ignore \"**/bin/**\" --ignore \"**/obj/**\"",
+    "lint:md:changed": "git diff --name-only --diff-filter=ACMRTUXB | grep \\\"\\.md$\\\" | xargs -r npx markdownlint"
+  },
+  "devDependencies": {
+    "markdownlint-cli": "^0.47.0"
+  }
+}

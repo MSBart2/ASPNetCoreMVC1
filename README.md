@@ -14,7 +14,6 @@ Welcome to the glam corner of .NET 9 where MVC meets main-character energy. This
 - **Feature-flag finesse** – Azure App Configuration flips features faster than a costume change.
 - **Observability drip** – Application Insights, custom telemetry, and coverage gates keep the receipts.
 
-
 ## Getting Started
 
 ### Prerequisites
@@ -37,6 +36,7 @@ Welcome to the glam corner of .NET 9 where MVC meets main-character energy. This
    ```
 
 3. **Run with hot reload (development):**
+
    ```bash
    dotnet watch run
    ```
@@ -176,6 +176,7 @@ This project includes custom GitHub Copilot agents that you can chat with direct
 Use `@agent-name` in Copilot Chat to invoke them:
 
 #### @code-reviewer 💖
+
 Reviews your code for quality and best practices.
 
 ```bash

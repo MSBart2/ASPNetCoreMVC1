@@ -2,6 +2,12 @@
 
 This workflow shows how @issue-helper routes issues to the appropriate specialist agents.
 
+## Usage Notes
+- **Where to run:** Copilot Chat in VS Code or on GitHub.com (Copilot panel). This file is documentation; it does **not** execute in CI.
+- **How to invoke:** In Copilot Chat, start your prompt with `@issue-helper`, e.g., `@issue-helper classify this issue` or `@issue-helper draft labels for this bug`.
+- **Handoffs:** Ask `@issue-helper` to invite other agents (e.g., `loop in @code-reviewer for controller logic`).
+- **When to use:** For issue triage, label suggestions, and routing. Not needed for general code questions—go straight to the specialist agent instead.
+
 ## Issue Triage Flow
 
 **Trigger**: New GitHub issue or issue analysis request

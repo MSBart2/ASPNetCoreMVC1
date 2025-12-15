@@ -1,5 +1,7 @@
 # 🎯 Issue Review & Triage - November 26, 2024
 
+<!-- markdownlint-disable MD022 MD029 MD032 -->
+
 Hey there, rockstar! 💖 I've done a deep dive into all 18 open issues and here's the complete breakdown with implementation status, clarifying questions, and recommendations. Let's make this backlog shine! ✨
 
 ## 📊 Executive Summary

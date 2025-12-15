@@ -2,6 +2,8 @@
 
 Because your code deserves attitude and automation.
 
+<!-- markdownlint-disable MD032 -->
+
 ## What It Does
 
 This script is your personal DevOps assistant with a serious personality. It will:

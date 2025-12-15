@@ -2,6 +2,11 @@
 
 This workflow demonstrates how agents hand off tasks to each other for comprehensive code review.
 
+## Usage Notes
+- **Where to run:** Copilot Chat in VS Code or on GitHub.com (the Copilot panel). These markdown docs are guidance only; they do **not** trigger CI workflows.
+- **How to invoke:** Start a Copilot Chat message with the agent mention, e.g., `@code-reviewer review this controller`. Follow-up handoffs happen by asking the agent to invite others (e.g., `loop in @security-auditor`).
+- **When to use:** Anytime you want structured review help. Use in-editor for quick checks while coding; use on GitHub.com while reviewing PRs for contextual feedback.
+
 ## Primary Flow: Complete Code Review
 
 **Trigger**: Developer requests code review

@@ -31,6 +31,7 @@ Before you begin, make sure you have:
 2. **Clone your fork** locally:
 
    ```bash
+   
    git clone https://github.com/YOUR-USERNAME/MVCApp1.git
    cd MVCApp1
    ```
@@ -38,6 +39,7 @@ Before you begin, make sure you have:
 3. **Add the upstream remote**:
 
    ```bash
+   
    git remote add upstream https://github.com/rbmathis/MVCApp1.git
    ```
 
@@ -55,6 +57,7 @@ Before you begin, make sure you have:
    ```
 
 6. **Run the tests**:
+
    ```bash
    cd tests/MVCApp1.UnitTests
    dotnet test
