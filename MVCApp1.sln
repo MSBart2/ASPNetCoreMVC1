@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCApp1", "MVCApp1.csproj",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCApp1.PlaywrightTests", "tests\MVCApp1.PlaywrightTests\MVCApp1.PlaywrightTests.csproj", "{A5F31ED2-4AF0-4E57-AA7B-20090A0BCD06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCApp1.UnitTests", "tests\MVCApp1.UnitTests\MVCApp1.UnitTests.csproj", "{B78A75CC-4D8F-4A69-9D47-4F109EC4BA12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{A5F31ED2-4AF0-4E57-AA7B-20090A0BCD06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5F31ED2-4AF0-4E57-AA7B-20090A0BCD06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5F31ED2-4AF0-4E57-AA7B-20090A0BCD06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B78A75CC-4D8F-4A69-9D47-4F109EC4BA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B78A75CC-4D8F-4A69-9D47-4F109EC4BA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B78A75CC-4D8F-4A69-9D47-4F109EC4BA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B78A75CC-4D8F-4A69-9D47-4F109EC4BA12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

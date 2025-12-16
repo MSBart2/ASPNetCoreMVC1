@@ -135,23 +135,33 @@ public class HomeController : Controller
     {
         var profile = await _userProfileService.GetProfileAsync("");
 
-        if (!string.IsNullOrEmpty(action) && action == "update" && !string.IsNullOrEmpty(field))
-        {
-            try
-            {
-                profile = await _userProfileService.UpdateFieldAsync("", field, value);
-            }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "Invalid field update attempt: {Field}", field);
-                ViewBag.Error = ex.Message;
-            }
-        }
-
         ViewBag.Profile = profile;
         ViewBag.Stats = _userProfileService.GetStats();
 
         return View();
+    }
+
+    /// <summary>
+    /// Handles secure profile updates via POST with CSRF protection.
+    /// </summary>
+    /// <param name="field">Whitelisted profile field to update.</param>
+    /// <param name="value">New value for the field.</param>
+    /// <returns>Redirects back to the profile page.</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateProfile(string field, string value)
+    {
+        try
+        {
+            await _userProfileService.UpdateFieldAsync("", field, value);
+        }
+        catch (ArgumentException ex)
+        {
+            _logger.LogWarning(ex, "Invalid field update attempt: {Field}", field);
+            TempData["Error"] = ex.Message;
+        }
+
+        return RedirectToAction(nameof(GodObjectProfile));
     }
 
     /// <summary>
