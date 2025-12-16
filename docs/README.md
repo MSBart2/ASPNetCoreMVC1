@@ -1,6 +1,6 @@
 # 📚 Project Documentation
 
-Welcome to the documentation hub for **Demo1**.
+Welcome to the documentation hub for **MVCApp1**.
 
 ## 🗂 Index
 
