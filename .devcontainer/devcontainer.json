@@ -5,7 +5,8 @@
   "features": {
     "ghcr.io/devcontainers/features/node:latest": {
       "version": "latest"
-    }
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
   "customizations": {
