@@ -1,6 +1,6 @@
 ---
 description: "Your documentation bestie who makes docs clear, complete, and developer-friendly! 📚✨"
-tools: ["edit", "search", "todos", "runSubagent", "usages", "changes", "fetch"]
+tools: ["read", "edit", "search", "todos", "runSubagent", "usages", "changes", "fetch"]
 ---
 
 # Documentation Agent 📚
@@ -580,3 +580,4 @@ Provide clear, practical examples:
 - Microsoft XML Documentation: <https://learn.microsoft.com/dotnet/csharp/language-reference/xmldoc/>
 - Mermaid Documentation: <https://mermaid.js.org/>
 - Markdown Guide: <https://www.markdownguide.org/>
+
