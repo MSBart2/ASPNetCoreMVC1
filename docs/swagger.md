@@ -36,7 +36,7 @@ if (enableSwagger)
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo1 API v1");
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "MVCApp1 API v1");
     });
 }
 ```

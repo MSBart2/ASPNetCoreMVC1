@@ -32,8 +32,8 @@ Set the connection string via configuration:
 
 - In `appsettings.json`: Update `ApplicationInsights:ConnectionString` (leave empty for local dev)
 - Via User Secrets: `dotnet user-secrets set "ApplicationInsights:ConnectionString" "InstrumentationKey=..."`
-- Via Environment Variable: `ApplicationInsights__ConnectionString`
-- In Azure: Set application setting `ApplicationInsights__ConnectionString` with your App Insights connection string
+- Via Environment Variable: `APPLICATIONINSIGHTS__CONNECTIONSTRING`
+- In Azure: Set application setting `APPLICATIONINSIGHTS__CONNECTIONSTRING` with your App Insights connection string
 
 ### Sampling Configuration
 
@@ -109,6 +109,101 @@ The application includes a custom `SecurityHeadersMiddleware` that adds the foll
 
 - Configure authentication/authorization via `builder.Services.AddAuthentication()`/`AddAuthorization()`
 - See issue #4 for Azure AD integration plans.
+
+## Azure App Configuration
+
+Azure App Configuration provides centralized configuration management and feature flag control.
+
+### Configuration
+
+Set up Azure App Configuration using one of these methods:
+
+**Option 1: Managed Identity (Recommended for Azure deployments)**
+```bash
+# Set environment variable
+export AZUREAPPCONFIGURATION__ENDPOINT="https://your-appconfig.azconfig.io"
+```
+
+**Option 2: Connection String (Development/Testing)**
+```bash
+# Set environment variable
+export AZUREAPPCONFIGURATION__CONNECTIONSTRING="Endpoint=https://...;Id=...;Secret=..."
+```
+
+Or in `appsettings.json`:
+```json
+{
+  "AzureAppConfiguration": {
+    "Endpoint": "https://your-appconfig.azconfig.io",
+    "Label": "Production"
+  }
+}
+```
+
+### Feature Flags
+
+Feature flags are managed through Azure App Configuration or local configuration.
+
+**Available Feature Flags** (defined in `Features/FeatureFlags.cs`):
+- `Feature1` - Example feature flag
+- `DarkMode` - Dark mode UI toggle
+- `ContactForm` - Contact form feature
+- `BetaFeatures` - Master toggle for beta features
+
+**Local Configuration** (`appsettings.json`):
+```json
+{
+  "FeatureManagement": {
+    "Feature1": true,
+    "DarkMode": false,
+    "ContactForm": true,
+    "BetaFeatures": false
+  }
+}
+```
+
+**Usage in Controllers:**
+```csharp
+[FeatureGate(FeatureFlags.Feature1)]
+public IActionResult Feature1()
+{
+    return View();
+}
+```
+
+**Refresh Behavior:**
+- Feature flags refresh automatically every 30 seconds when Azure App Configuration is configured
+- Uses a sentinel value (`FeatureManagement:Sentinel`) to trigger refresh of all configuration
+- Falls back to local configuration if Azure App Configuration is unavailable
+
+### Cache Configuration
+
+The application supports both in-memory and Redis distributed cache.
+
+**In-Memory Cache (Default):**
+No configuration needed. Used automatically when Redis is not configured.
+
+**Redis Cache (Production):**
+```bash
+# Set environment variable
+export REDIS_CONNECTIONSTRING="your-redis-server:6379,password=your-password"
+```
+
+Or in `appsettings.json`:
+```json
+{
+  "CacheProvider": "Redis",
+  "Redis": {
+    "ConnectionString": "localhost:6379"
+  }
+}
+```
+
+**Session Configuration:**
+- Session timeout: 30 minutes
+- Cookie name: `.MVCApp1.Session`
+- HttpOnly: Enabled
+- Essential: Enabled
 
 ## Logging
 
